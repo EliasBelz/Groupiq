@@ -1,0 +1,54 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:groupiq_flutter/views/explore_view.dart';
+import 'package:groupiq_flutter/views/home_view.dart';
+import 'package:groupiq_flutter/views/profile_view.dart';
+import 'package:groupiq_flutter/widgets/bottom_nav.dart';
+
+class MainView extends StatefulWidget {
+  static const views = <Widget>[
+    const ExploreView(),
+    const HomeView(),
+    const ProfileView(),
+  ];
+  const MainView({super.key});
+
+  @override
+  State<MainView> createState() => _MainViewState();
+}
+
+class _MainViewState extends State<MainView> {
+  int currentPageIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Groupiq',
+        theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue, brightness: Brightness.light),
+          floatingActionButtonTheme: const FloatingActionButtonThemeData(
+            backgroundColor: Colors.blue,
+          ),
+        ),
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+            body: MainView.views[currentPageIndex],
+            bottomNavigationBar: BottomNav(
+              startingIdx: currentPageIndex,
+              onDestClick: (idx) {
+                setState(() {
+                  currentPageIndex = idx;
+                });
+              },
+            ),
+            floatingActionButton: FloatingActionButton(
+              shape: const CircleBorder(),
+              onPressed: () {
+                print('FAB pressed');
+              },
+              child: const Icon(Icons.add, color: Colors.white),
+            )));
+  }
+}
