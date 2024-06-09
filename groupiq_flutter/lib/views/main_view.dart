@@ -19,13 +19,21 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  int currentPageIndex = 0;
+  late int currentPageIndex;
+
+  @override
+  void initState() {
+    // Launches on home view
+    currentPageIndex = 1;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Groupiq',
         theme: ThemeData(
-          useMaterial3: true,
+          primaryColor: Colors.blue,
           colorScheme: ColorScheme.fromSeed(
               seedColor: Colors.blue, brightness: Brightness.light),
           floatingActionButtonTheme: const FloatingActionButtonThemeData(

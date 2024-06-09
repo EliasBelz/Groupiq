@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -23,45 +25,66 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationBar(
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-      onDestinationSelected: (int index) {
-        setState(() {
-          currentPageIndex = index;
-        });
-        widget.onDestClick != null ? widget.onDestClick!(index) : null;
-      },
-      indicatorColor: Colors.transparent,
-      selectedIndex: currentPageIndex,
-      destinations: const <Widget>[
-        NavigationDestination(
-          selectedIcon: Icon(Icons.search, color: BottomNav.selectedColor),
-          icon: Icon(
-            Icons.search,
-            color: BottomNav.unselectedColor,
+    return Theme(
+      data: Theme.of(context).copyWith(
+          navigationBarTheme: const NavigationBarThemeData(
+        iconTheme: WidgetStatePropertyAll(IconThemeData(
+          size: 30,
+        )),
+        labelTextStyle:
+            WidgetStatePropertyAll(TextStyle(color: BottomNav.selectedColor)),
+      )),
+      child: NavigationBar(
+        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+          widget.onDestClick != null ? widget.onDestClick!(index) : null;
+        },
+        surfaceTintColor: BottomNav.selectedColor,
+        indicatorColor: Colors.transparent,
+        height: 60,
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: NavigationDestination(
+              selectedIcon: Icon(Icons.search, color: BottomNav.selectedColor),
+              icon: Icon(
+                Icons.search,
+                color: BottomNav.unselectedColor,
+              ),
+              label: 'Explore',
+            ),
           ),
-          label: 'Explore',
-        ),
-        NavigationDestination(
-          selectedIcon: Icon(Icons.email, color: BottomNav.selectedColor),
-          icon: Icon(
-            Icons.email_outlined,
-            color: BottomNav.unselectedColor,
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: NavigationDestination(
+              selectedIcon: Icon(Icons.email, color: BottomNav.selectedColor),
+              icon: Icon(
+                Icons.email_outlined,
+                color: BottomNav.unselectedColor,
+              ),
+              label: 'Home',
+            ),
           ),
-          label: 'Home',
-        ),
-        NavigationDestination(
-          selectedIcon: Badge(
-            label: Text('2'),
-            child: Icon(Icons.person, color: BottomNav.selectedColor),
+          Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: NavigationDestination(
+              selectedIcon: Badge(
+                label: Text('2'),
+                child: Icon(Icons.person, color: BottomNav.selectedColor),
+              ),
+              icon: Badge(
+                label: Text('2'),
+                child: Icon(Icons.person, color: BottomNav.unselectedColor),
+              ),
+              label: 'Profile',
+            ),
           ),
-          icon: Badge(
-            label: Text('2'),
-            child: Icon(Icons.person, color: BottomNav.unselectedColor),
-          ),
-          label: 'Profile',
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
