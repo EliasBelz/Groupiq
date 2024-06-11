@@ -25,3 +25,8 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+pocketbase
+pb_data/
+
+.vscode/

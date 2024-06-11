@@ -14,8 +14,6 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
     return Container(
         decoration: const BoxDecoration(
             border: Border(
-                top: BorderSide(
-                    width: 1, color: Color.fromARGB(255, 227, 226, 226)),
                 bottom: BorderSide(
                     width: 1, color: Color.fromARGB(255, 227, 226, 226)))),
         height: 105,
