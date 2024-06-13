@@ -5,11 +5,13 @@ import 'package:groupiq_flutter/views/explore_view.dart';
 import 'package:groupiq_flutter/views/home_view.dart';
 import 'package:groupiq_flutter/views/profile_view.dart';
 import 'package:groupiq_flutter/widgets/bottom_nav.dart';
+import 'package:groupiq_flutter/views/chat_view.dart';
 
 class MainView extends StatefulWidget {
   static const views = <Widget>[
     const ExploreView(),
     const HomeView(),
+    // const ChatView(),
     const ProfileView(),
   ];
   const MainView({super.key});
