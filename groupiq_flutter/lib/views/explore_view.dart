@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:groupiq_flutter/views/card_column.dart';
+import 'package:groupiq_flutter/widgets/chat_card/explore_chat_card.dart';
 import 'package:groupiq_flutter/widgets/search_bar.dart';
 import 'package:groupiq_flutter/widgets/tag_pill.dart';
+import 'package:groupiq_flutter/widgets/trending_tag_row.dart';
 
 class ExploreView extends StatefulWidget {
   const ExploreView({super.key});
@@ -12,74 +15,50 @@ class ExploreView extends StatefulWidget {
 class _ExploreViewState extends State<ExploreView> {
   @override
   Widget build(BuildContext context) {
-    return const Column(
-      children: [
-        CustomSearchBar(),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            children: [
-              Center(child: Text('Explore page')),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text('🔥 Trending Now',
-                    style:
-                        TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TagPill(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 252, 182, 70),
-                          Color.fromARGB(255, 239, 72, 22)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      hasShadow: true,
-                      text: '#phish'),
-                  TagPill(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 220, 85, 253),
-                          Color.fromARGB(255, 123, 22, 239)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      hasShadow: true,
-                      text: '#health'),
-                  TagPill(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 85, 253, 113),
-                          Color.fromARGB(255, 22, 170, 239)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      hasShadow: true,
-                      text: '#fitness',
-                      width: 85),
-                  TagPill(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 110, 85, 253),
-                          Color.fromARGB(255, 239, 22, 112)
-                        ],
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                      ),
-                      hasShadow: true,
-                      text: '#ipsum'),
-                ],
-              ),
-            ],
+    return const SingleChildScrollView(
+      child: Column(
+        children: [
+          CustomSearchBar(),
+          Padding(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('🔥 Trending Now',
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: TrendingTagRow(),
+                ),
+                CardColumn(
+                  children: [ExploreChatCard(), ExploreChatCard()],
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text('🌍 Around the World',
+                      style:
+                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                  child: TrendingTagRow(),
+                ),
+                CardColumn(
+                  children: [
+                    ExploreChatCard(),
+                    ExploreChatCard(),
+                    ExploreChatCard(),
+                    ExploreChatCard(),
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
