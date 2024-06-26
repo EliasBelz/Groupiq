@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ChatAvatar extends StatelessWidget {
-  const ChatAvatar({super.key});
+  final double borderRadius;
+
+  const ChatAvatar({super.key, this.borderRadius = 5.0});
+
+  // const ChatAvatar({super.key});
 
   //TODO imageLoadBuilder
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(5.0),
+      borderRadius: BorderRadius.circular(borderRadius),
       child: Image(
         image: NetworkImage(
             'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),

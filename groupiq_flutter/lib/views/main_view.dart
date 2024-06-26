@@ -11,7 +11,6 @@ class MainView extends StatefulWidget {
   static const views = <Widget>[
     const ExploreView(),
     const HomeView(),
-    // const ChatView(),
     const ProfileView(),
   ];
   const MainView({super.key});

@@ -19,6 +19,7 @@ class TagPill extends StatelessWidget {
       required this.gradient,
       super.key});
 
+  // TODO: Automatic resize
   @override
   Widget build(BuildContext context) {
     return SizedBox(

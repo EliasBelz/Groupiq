@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:groupiq_flutter/views/chat_view.dart';
 import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 
 class EmptyChatCard extends StatelessWidget {
@@ -13,7 +14,10 @@ class EmptyChatCard extends StatelessWidget {
         splashColor: Colors.blue.withAlpha(30),
         highlightColor: Colors.blue.withAlpha(50),
         onTap: () {
-          print('Tapped!');
+          if (onTap != null) {
+            print('Tapped!');
+            onTap!();
+          }
         },
         child: Container(
             decoration: const BoxDecoration(
