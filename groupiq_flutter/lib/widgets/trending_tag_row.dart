@@ -10,11 +10,11 @@ class TrendingTagRow extends StatelessWidget {
   // Maybe make tags horizontally scrollable if there are too many
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         TagPill(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 Color.fromARGB(255, 252, 182, 70),
                 Color.fromARGB(255, 239, 72, 22)
@@ -25,7 +25,7 @@ class TrendingTagRow extends StatelessWidget {
             hasShadow: true,
             text: '#phish'),
         TagPill(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 Color.fromARGB(255, 220, 85, 253),
                 Color.fromARGB(255, 123, 22, 239)
@@ -36,7 +36,7 @@ class TrendingTagRow extends StatelessWidget {
             hasShadow: true,
             text: '#health'),
         TagPill(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 Color.fromARGB(255, 85, 253, 113),
                 Color.fromARGB(255, 22, 170, 239)
@@ -48,7 +48,7 @@ class TrendingTagRow extends StatelessWidget {
             text: '#fitness',
             width: 85),
         TagPill(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [
                 Color.fromARGB(255, 110, 85, 253),
                 Color.fromARGB(255, 239, 22, 112)

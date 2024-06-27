@@ -39,6 +39,7 @@ dependencies:
   community_material_icon: ^5.9.55
   cached_network_image: ^3.3.1
   intl: ^0.19.0
+  flutter_screenutil: ^5.9.3
 
 dev_dependencies:
   flutter_test:
