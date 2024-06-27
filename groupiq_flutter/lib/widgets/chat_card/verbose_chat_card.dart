@@ -15,8 +15,7 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
   Widget build(BuildContext context) {
     return EmptyChatCard(
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const ChatView()));
+          Navigator.pushNamed(context, "chat");
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

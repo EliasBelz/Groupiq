@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
 import 'package:groupiq_flutter/views/home_view.dart';
 import 'package:groupiq_flutter/views/profile_view.dart';
@@ -14,7 +15,8 @@ class MainView extends StatefulWidget {
     "home": HomeView(),
     "explore": ExploreView(),
     "profile": ProfileView(),
-    "chat": ChatView()
+    "chat": ChatView(),
+    "chat info": ChatInfoView(),
   };
 
   const MainView({super.key});
@@ -57,8 +59,8 @@ class _MainViewState extends State<MainView> {
                 body: Navigator(
                   key: navigatorKey,
                   onGenerateRoute: (settings) {
-                    Widget page =
-                        MainView.viewMap[settings.name] ?? const HomeView();
+                    Widget page = MainView.viewMap[settings.name] ??
+                        const ChatInfoView(); // change this to be whatever page ur working on
                     return MaterialPageRoute(builder: (_) => page);
                   },
                 ),
