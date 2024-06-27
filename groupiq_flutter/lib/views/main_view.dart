@@ -60,7 +60,7 @@ class _MainViewState extends State<MainView> {
                   key: navigatorKey,
                   onGenerateRoute: (settings) {
                     Widget page = MainView.viewMap[settings.name] ??
-                        const ChatInfoView(); // change this to be whatever page ur working on
+                        const HomeView(); // change this to be whatever page ur working on
                     return MaterialPageRoute(builder: (_) => page);
                   },
                 ),

@@ -31,16 +31,21 @@ class ChatTopNav extends StatelessWidget implements PreferredSizeWidget {
                 child: const ChatAvatar(
                     borderRadius: 40.0, width: 45.0, height: 45.0)),
             // chat title and users
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Chat title",
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                  InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, "chat info");
+                    },
+                    child: const Text(
+                      "Chat title",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
-                  Text("14 mil active",
+                  const Text("14 mil active",
                       style: TextStyle(
                           fontSize: 15.0, color: Color.fromARGB(64, 0, 0, 0)))
                 ],
