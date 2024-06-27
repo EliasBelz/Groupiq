@@ -8,11 +8,14 @@ import 'package:groupiq_flutter/widgets/bottom_nav.dart';
 import 'package:groupiq_flutter/views/chat_view.dart';
 
 class MainView extends StatefulWidget {
-  static const views = <Widget>[
-    const ExploreView(),
-    const HomeView(),
-    const ProfileView(),
-  ];
+  // lookup routes
+  static const viewMap = <String, Widget>{
+    "home": HomeView(),
+    "explore": ExploreView(),
+    "profile": ProfileView(),
+    "chat": ChatView()
+  };
+
   const MainView({super.key});
 
   @override
@@ -20,17 +23,10 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-  late int currentPageIndex;
-
-  @override
-  void initState() {
-    // Launches on home view
-    currentPageIndex = 1;
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
     return MaterialApp(
         title: 'Groupiq',
         theme: ThemeData(
@@ -43,13 +39,18 @@ class _MainViewState extends State<MainView> {
         ),
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            body: MainView.views[currentPageIndex],
+            body: Navigator(
+              key: navigatorKey,
+              onGenerateRoute: (settings) {
+                print(settings.name);
+                Widget page =
+                    MainView.viewMap[settings.name] ?? const HomeView();
+                return MaterialPageRoute(builder: (_) => page);
+              },
+            ),
             bottomNavigationBar: BottomNav(
-              startingIdx: currentPageIndex,
-              onDestClick: (idx) {
-                setState(() {
-                  currentPageIndex = idx;
-                });
+              onDestClick: (screenName) {
+                navigatorKey.currentState?.pushNamed(screenName);
               },
             ),
             floatingActionButton: FloatingActionButton(

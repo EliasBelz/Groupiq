@@ -30,7 +30,7 @@ class EmptyChatCard extends StatelessWidget {
                 children: [
                   const Padding(
                     padding: EdgeInsets.all(12.0),
-                    child: SizedBox(width: 70, height: 70, child: ChatAvatar()),
+                    child: ChatAvatar(height: 70.0, width: 70.0),
                   ),
                   Expanded(child: child)
                 ],

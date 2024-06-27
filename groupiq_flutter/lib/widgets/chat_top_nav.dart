@@ -15,12 +15,7 @@ class ChatTopNav extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Row(children: [
         // chat avatar
-        const SizedBox(
-            width: 45,
-            height: 45,
-            child: ChatAvatar(
-              borderRadius: 40.0,
-            )),
+        const ChatAvatar(borderRadius: 40.0, width: 45.0, height: 45.0),
         // chat title and users
         const Padding(
           padding: EdgeInsets.all(10.0),

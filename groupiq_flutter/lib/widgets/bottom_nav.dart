@@ -4,11 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class BottomNav extends StatefulWidget {
-  final Function(int)? onDestClick;
+  final Function(String)? onDestClick;
   final startingIdx;
   static const unselectedColor = Colors.grey;
   static const selectedColor = Colors.blue;
-  const BottomNav({this.startingIdx = 0, this.onDestClick, super.key});
+  const BottomNav({this.startingIdx = 1, this.onDestClick, super.key});
+  static const views = <String>["explore", "home", "profile"];
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -40,7 +41,9 @@ class _BottomNavState extends State<BottomNav> {
           setState(() {
             currentPageIndex = index;
           });
-          widget.onDestClick != null ? widget.onDestClick!(index) : null;
+          widget.onDestClick != null
+              ? widget.onDestClick!(BottomNav.views[index])
+              : null;
         },
         surfaceTintColor: BottomNav.selectedColor,
         indicatorColor: Colors.transparent,
