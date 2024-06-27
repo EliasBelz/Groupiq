@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TagPill extends StatelessWidget {
   final String text;
@@ -9,15 +10,18 @@ class TagPill extends StatelessWidget {
   final bool hasShadow;
   final double fontSize;
 
-  const TagPill(
-      {this.text = "",
-      this.textColor = Colors.white,
-      this.height = 25,
-      this.width = 75,
-      this.hasShadow = false,
-      this.fontSize = 13,
-      required this.gradient,
-      super.key});
+  TagPill({
+    this.text = "",
+    this.textColor = Colors.white,
+    double height = 25.0,
+    double width = 78.0,
+    this.hasShadow = false,
+    double fontSize = 12.0,
+    required this.gradient,
+    super.key,
+  })  : height = height.w,
+        width = width.w,
+        fontSize = fontSize.sp;
 
   // TODO: Automatic resize
   @override
