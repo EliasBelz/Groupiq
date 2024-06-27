@@ -41,7 +41,7 @@ class _ChatViewState extends State<ChatView> {
         isAdmin: false);
 
     setState(() {
-      messages.add(newMessage);
+      messages.insert(0, newMessage);
     });
   }
 
@@ -50,51 +50,51 @@ class _ChatViewState extends State<ChatView> {
     return Scaffold(
       appBar: const ChatTopNav(),
       body: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Flexible(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    const Spacer(),
-                    const Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Row(children: [
-                        Expanded(child: Divider(color: Colors.black54)),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            "No new messages",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Expanded(child: Divider(color: Colors.black54))
-                      ]),
-                    ),
-                    SizedBox(
-                      height: 300,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: messages.length,
-                        itemBuilder: (context, index) {
-                          return MessageWidget(message: messages[index]);
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              ),
+          Expanded(
+              child: Container(
+            decoration: const BoxDecoration(color: Colors.white),
+            child: ListView.builder(
+              reverse: true,
+              shrinkWrap: true,
+              itemCount: messages.length + 1,
+              itemBuilder: (context, index) {
+                return index == messages.length
+                    ? endOfMessages()
+                    : MessageWidget(message: messages[index]);
+              },
             ),
-          ),
+          )),
           InputBar(
             onSend: (message) {
               addMessage(message);
             },
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget endOfMessages() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 30.0),
+      child: Row(
+        children: [
+          Expanded(child: Divider(color: Colors.black45)),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: Text(
+              "No New Messages",
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, color: Colors.black45),
+            ),
+          ),
+          Expanded(
+            child: Divider(
+              color: Colors.black45,
+            ),
+          )
         ],
       ),
     );
