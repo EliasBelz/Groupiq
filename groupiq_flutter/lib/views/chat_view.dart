@@ -58,12 +58,34 @@ class _ChatViewState extends State<ChatView> {
               ),
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    return MessageWidget(message: messages[index]);
-                  },
+                child: Column(
+                  children: [
+                    const Spacer(),
+                    const Padding(
+                      padding: EdgeInsets.all(20.0),
+                      child: Row(children: [
+                        Expanded(child: Divider(color: Colors.black54)),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Text(
+                            "No new messages",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Expanded(child: Divider(color: Colors.black54))
+                      ]),
+                    ),
+                    SizedBox(
+                      height: 300,
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: messages.length,
+                        itemBuilder: (context, index) {
+                          return MessageWidget(message: messages[index]);
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
