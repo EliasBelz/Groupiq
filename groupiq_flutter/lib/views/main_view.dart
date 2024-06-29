@@ -5,9 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
 import 'package:groupiq_flutter/views/home_view.dart';
+import 'package:groupiq_flutter/views/login_view.dart';
 import 'package:groupiq_flutter/views/profile_view.dart';
 import 'package:groupiq_flutter/widgets/bottom_nav.dart';
 import 'package:groupiq_flutter/views/chat_view.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class MainView extends StatefulWidget {
   // lookup routes
@@ -18,8 +20,9 @@ class MainView extends StatefulWidget {
     "chat": ChatView(),
     "chat info": ChatInfoView(),
   };
+  final PocketBase pb;
 
-  const MainView({super.key});
+  const MainView({required this.pb, super.key});
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -30,6 +33,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     final Size screenSize = MediaQuery.of(context).size;
+    final pb = widget.pb;
 
     print(
         'Device Width: ${screenSize.width}, Device Height: ${screenSize.height}');
@@ -44,6 +48,7 @@ class _MainViewState extends State<MainView> {
         // ark widget needs build only if:... responsiveWidgets does not contains widget name
         responsiveWidgets: [],
         builder: (context, child) {
+          final _isLoggedIn = pb.authStore.isValid;
           return MaterialApp(
               title: 'Groupiq',
               theme: ThemeData(
@@ -60,15 +65,20 @@ class _MainViewState extends State<MainView> {
                   key: navigatorKey,
                   onGenerateRoute: (settings) {
                     Widget page = MainView.viewMap[settings.name] ??
-                        const HomeView(); // change this to be whatever page ur working on
+                        (_isLoggedIn
+                            ? const HomeView()
+                            : LoginView(
+                                pb: pb)); // change this to be whatever page ur working on
                     return MaterialPageRoute(builder: (_) => page);
                   },
                 ),
-                bottomNavigationBar: BottomNav(
-                  onDestClick: (screenName) {
-                    navigatorKey.currentState?.pushNamed(screenName);
-                  },
-                ),
+                bottomNavigationBar: _isLoggedIn
+                    ? BottomNav(
+                        onDestClick: (screenName) {
+                          navigatorKey.currentState?.pushNamed(screenName);
+                        },
+                      )
+                    : null,
                 // floatingActionButton: FloatingActionButton(
                 //   shape: const CircleBorder(),
                 //   onPressed: () {
