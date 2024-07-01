@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
+import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
 import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
 import 'package:groupiq_flutter/views/home_view.dart';
@@ -20,9 +22,12 @@ class MainView extends StatefulWidget {
     "chat": ChatView(),
     "chat info": ChatInfoView(),
   };
-  final PocketBase pb;
+  late final PocketBase pb;
+  final GetIt getIt = GetIt.instance;
 
-  const MainView({required this.pb, super.key});
+  MainView({super.key}) {
+    pb = getIt<PocketBase>();
+  }
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -67,8 +72,7 @@ class _MainViewState extends State<MainView> {
                     Widget page = MainView.viewMap[settings.name] ??
                         (_isLoggedIn
                             ? const HomeView()
-                            : LoginView(
-                                pb: pb)); // change this to be whatever page ur working on
+                            : const LoginView()); // change this to be whatever page ur working on
                     return MaterialPageRoute(builder: (_) => page);
                   },
                 ),

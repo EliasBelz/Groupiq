@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
 import 'package:groupiq_flutter/views/main_view.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class LoginView extends StatefulWidget {
-  final PocketBase pb;
-  const LoginView({required this.pb, super.key});
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
-  late final pb = widget.pb;
+  late final PocketBase pb;
+  final GetIt getIt = GetIt.instance;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -24,6 +26,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     _formKey = GlobalKey<FormState>();
+    pb = getIt<PocketBase>();
     super.initState();
   }
 
@@ -60,37 +63,27 @@ class _LoginViewState extends State<LoginView> {
       required String password,
       required String passwordConfirm,
       required String name}) async {
-    // final body = <String, dynamic>{
-    //   "username": username,
-    //   "email": email,
-    //   "password": password,
-    //   "passwordConfirm": passwordConfirm,
-    //   "name": name,
-    // };
-    // final record = await pb.collection('users').create(body: body);
-    // print(record);
     final body = <String, dynamic>{
-      "username": "test boy",
-      "email": "elias@example.com",
-      "password": "12345678",
-      "passwordConfirm": "12345678",
-      "name": "Bob Smith"
+      "username": username,
+      "email": email,
+      "password": password,
+      "passwordConfirm": passwordConfirm,
+      "name": name,
     };
-
     final record = await pb.collection('users').create(body: body);
     print(record);
   }
 
-  _signIn({required String username, required String password}) async {
+  _signIn({required String email, required String password}) async {
     final authData =
-        await pb.collection('users').authWithPassword(username, password);
+        await pb.collection('users').authWithPassword(email, password);
     print(authData);
     print(pb.authStore.isValid);
     if (mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MainView(pb: pb),
+          builder: (context) => MainView(),
         ),
       );
     }
@@ -135,8 +128,11 @@ class _LoginViewState extends State<LoginView> {
                 decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
-                  if (value == null || value.isEmpty || value.length < 6) {
-                    return 'Password must be at least 6 characters long';
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.length < 8 ||
+                      value.length > 72) {
+                    return 'Password must be at least 8 characters long';
                   }
                   return null;
                 },
@@ -160,7 +156,7 @@ class _LoginViewState extends State<LoginView> {
                     if (_isLogin) {
                       try {
                         await _signIn(
-                            username: _usernameController.text,
+                            email: _emailController.text,
                             password: _passwordController.text);
                       } catch (e) {
                         mounted
