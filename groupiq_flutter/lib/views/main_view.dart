@@ -2,24 +2,33 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
+import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
 import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
 import 'package:groupiq_flutter/views/home_view.dart';
+import 'package:groupiq_flutter/views/login_view.dart';
 import 'package:groupiq_flutter/views/profile_view.dart';
 import 'package:groupiq_flutter/widgets/bottom_nav.dart';
 import 'package:groupiq_flutter/views/chat_view.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class MainView extends StatefulWidget {
   // lookup routes
-  static const viewMap = <String, Widget>{
-    "home": HomeView(),
-    "explore": ExploreView(),
+  static final viewMap = <String, Widget>{
+    "home": const HomeView(),
+    "explore": const ExploreView(),
     "profile": ProfileView(),
-    "chat": ChatView(),
-    "chat info": ChatInfoView(),
+    "chat": const ChatView(),
+    "chat info": const ChatInfoView(),
+    'login': const LoginView(),
   };
+  late final PocketBase pb;
+  final GetIt getIt = GetIt.instance;
 
-  const MainView({super.key});
+  MainView({super.key}) {
+    pb = getIt<PocketBase>();
+  }
 
   @override
   State<MainView> createState() => _MainViewState();
@@ -30,6 +39,7 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     final Size screenSize = MediaQuery.of(context).size;
+    final pb = widget.pb;
 
     print(
         'Device Width: ${screenSize.width}, Device Height: ${screenSize.height}');
@@ -44,6 +54,7 @@ class _MainViewState extends State<MainView> {
         // ark widget needs build only if:... responsiveWidgets does not contains widget name
         responsiveWidgets: [],
         builder: (context, child) {
+          final _isLoggedIn = pb.authStore.isValid;
           return MaterialApp(
               title: 'Groupiq',
               theme: ThemeData(
@@ -60,15 +71,19 @@ class _MainViewState extends State<MainView> {
                   key: navigatorKey,
                   onGenerateRoute: (settings) {
                     Widget page = MainView.viewMap[settings.name] ??
-                        const HomeView(); // change this to be whatever page ur working on
+                        (_isLoggedIn
+                            ? const HomeView()
+                            : const LoginView()); // change this to be whatever page ur working on
                     return MaterialPageRoute(builder: (_) => page);
                   },
                 ),
-                bottomNavigationBar: BottomNav(
-                  onDestClick: (screenName) {
-                    navigatorKey.currentState?.pushNamed(screenName);
-                  },
-                ),
+                bottomNavigationBar: _isLoggedIn
+                    ? BottomNav(
+                        onDestClick: (screenName) {
+                          navigatorKey.currentState?.pushNamed(screenName);
+                        },
+                      )
+                    : null,
                 // floatingActionButton: FloatingActionButton(
                 //   shape: const CircleBorder(),
                 //   onPressed: () {
