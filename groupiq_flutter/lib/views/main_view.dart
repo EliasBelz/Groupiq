@@ -15,12 +15,13 @@ import 'package:pocketbase/pocketbase.dart';
 
 class MainView extends StatefulWidget {
   // lookup routes
-  static const viewMap = <String, Widget>{
-    "home": HomeView(),
-    "explore": ExploreView(),
+  static final viewMap = <String, Widget>{
+    "home": const HomeView(),
+    "explore": const ExploreView(),
     "profile": ProfileView(),
-    "chat": ChatView(),
-    "chat info": ChatInfoView(),
+    "chat": const ChatView(),
+    "chat info": const ChatInfoView(),
+    'login': const LoginView(),
   };
   late final PocketBase pb;
   final GetIt getIt = GetIt.instance;

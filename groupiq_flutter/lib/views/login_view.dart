@@ -89,6 +89,7 @@ class _LoginViewState extends State<LoginView> {
     }
   }
 
+  // TODO show more detailed error messages -> i think you can just pull the status message from the response
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,20 +109,23 @@ class _LoginViewState extends State<LoginView> {
                   decoration: InputDecoration(labelText: 'Name'),
                 ),
                 TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'Username'),
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        !value.contains('@')) {
+                      return 'Please enter a valid email';
+                    }
+                    return null;
+                  },
                 ),
               ],
               TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
+                controller: _usernameController,
+                decoration: InputDecoration(
+                    labelText: 'Username${_isLogin ? ' or Email' : ''}'),
               ),
               TextFormField(
                 controller: _passwordController,
@@ -156,7 +160,7 @@ class _LoginViewState extends State<LoginView> {
                     if (_isLogin) {
                       try {
                         await _signIn(
-                            email: _emailController.text,
+                            email: _usernameController.text,
                             password: _passwordController.text);
                       } catch (e) {
                         mounted
