@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
-import 'package:groupiq_flutter/services/pocketbase/registry.dart';
+import 'package:groupiq_flutter/services/registry.dart';
 import 'package:groupiq_flutter/views/login_view.dart';
 import 'package:groupiq_flutter/views/main_view.dart';
 import 'firebase_options.dart';
