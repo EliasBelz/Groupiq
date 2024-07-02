@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/views/chat_view.dart';
 import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 import 'package:groupiq_flutter/widgets/chat_card/empty_chat_card.dart';
@@ -15,7 +16,7 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
   Widget build(BuildContext context) {
     return EmptyChatCard(
         onTap: () {
-          Navigator.pushNamed(context, "chat");
+          context.go('/chat');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
 import 'package:groupiq_flutter/views/main_view.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -80,12 +81,7 @@ class _LoginViewState extends State<LoginView> {
     print(authData);
     print(pb.authStore.isValid);
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainView(),
-        ),
-      );
+      context.go('/home');
     }
   }
 
@@ -93,6 +89,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKey<ScaffoldState>(),
       appBar: AppBar(
         title: Text(_isLogin ? 'Login' : 'Sign Up'),
       ),
