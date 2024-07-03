@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
-import 'package:groupiq_flutter/views/main_view.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class LoginView extends StatefulWidget {
@@ -27,6 +26,12 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     _formKey = GlobalKey<FormState>();
     pb = getIt<PocketBase>();
+    // Idk if this is good form or not
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pb.authStore.isValid) {
+        context.go('/home');
+      }
+    });
     super.initState();
   }
 
@@ -80,12 +85,7 @@ class _LoginViewState extends State<LoginView> {
     print(authData);
     print(pb.authStore.isValid);
     if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainView(),
-        ),
-      );
+      context.go('/home');
     }
   }
 
@@ -93,6 +93,7 @@ class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: GlobalKey<ScaffoldState>(),
       appBar: AppBar(
         title: Text(_isLogin ? 'Login' : 'Sign Up'),
       ),
@@ -106,11 +107,11 @@ class _LoginViewState extends State<LoginView> {
               if (!_isLogin) ...[
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null ||
@@ -129,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null ||
@@ -144,7 +145,7 @@ class _LoginViewState extends State<LoginView> {
               if (!_isLogin)
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: InputDecoration(labelText: 'Confirm Password'),
+                  decoration: const InputDecoration(labelText: 'Confirm Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value != _passwordController.text) {

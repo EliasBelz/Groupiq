@@ -1,5 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 
@@ -11,7 +9,7 @@ class ChatInfoView extends StatefulWidget {
 }
 
 class _ChatInfoViewState extends State<ChatInfoView> {
-  bool _stretch = true;
+  final bool _stretch = true;
 
   @override
   Widget build(BuildContext context) {

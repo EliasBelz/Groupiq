@@ -1,8 +1,6 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:groupiq_flutter/models/message.dart';
-import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 import 'package:groupiq_flutter/widgets/chat_top_nav.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
@@ -104,7 +102,7 @@ class _ChatViewState extends State<ChatView> {
 class InputBar extends StatefulWidget {
   final Function(String) onSend;
 
-  InputBar({required this.onSend});
+  const InputBar({super.key, required this.onSend});
 
   @override
   _InputBarState createState() => _InputBarState();
@@ -138,7 +136,7 @@ class _InputBarState extends State<InputBar> {
         decoration: const BoxDecoration(
             color: Colors.white,
             border: Border(
-                top: const BorderSide(width: 1.0, color: Colors.black26))),
+                top: BorderSide(width: 1.0, color: Colors.black26))),
         child: SafeArea(
           child: Row(
             children: [
@@ -198,7 +196,7 @@ class _InputBarState extends State<InputBar> {
 class MessageWidget extends StatelessWidget {
   final Message message;
 
-  MessageWidget({required this.message});
+  const MessageWidget({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {

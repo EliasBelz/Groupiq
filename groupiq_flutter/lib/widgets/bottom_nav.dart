@@ -1,7 +1,6 @@
-import 'dart:ffi';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomNav extends StatefulWidget {
   final Function(String)? onDestClick;
@@ -9,7 +8,7 @@ class BottomNav extends StatefulWidget {
   static const unselectedColor = Colors.grey;
   static const selectedColor = Colors.blue;
   const BottomNav({this.startingIdx = 1, this.onDestClick, super.key});
-  static const views = <String>["explore", "home", "profile"];
+  static const routes = <String>["/explore", "/home", "/profile"];
 
   @override
   State<BottomNav> createState() => _BottomNavState();
@@ -41,9 +40,7 @@ class _BottomNavState extends State<BottomNav> {
           setState(() {
             currentPageIndex = index;
           });
-          widget.onDestClick != null
-              ? widget.onDestClick!(BottomNav.views[index])
-              : null;
+          context.go(BottomNav.routes[index]);
         },
         surfaceTintColor: BottomNav.selectedColor,
         indicatorColor: Colors.transparent,
