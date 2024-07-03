@@ -28,6 +28,12 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     _formKey = GlobalKey<FormState>();
     pb = getIt<PocketBase>();
+    // Idk if this is good form or not
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (pb.authStore.isValid) {
+        context.go('/home');
+      }
+    });
     super.initState();
   }
 
