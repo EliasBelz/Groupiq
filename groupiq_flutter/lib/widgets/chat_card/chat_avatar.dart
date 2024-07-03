@@ -22,7 +22,7 @@ class ChatAvatar extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadius),
         child: Image(
-          image: NetworkImage(
+          image: const NetworkImage(
               'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
           loadingBuilder: (BuildContext context, Widget child,
               ImageChunkEvent? loadingProgress) {

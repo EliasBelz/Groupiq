@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:groupiq_flutter/views/chat_view.dart';
 import 'package:groupiq_flutter/widgets/chat_card/empty_chat_card.dart';
 
 class ExploreChatCard extends StatelessWidget {
@@ -10,7 +9,7 @@ class ExploreChatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return EmptyChatCard(
         onTap: () {
-          context.go('/chat');
+          context.push('/chat');
         },
         child: const Row(
           children: [

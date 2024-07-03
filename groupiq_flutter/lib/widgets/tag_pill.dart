@@ -60,6 +60,5 @@ class TagPill extends StatelessWidget {
         ),
       ),
     );
-    ;
   }
 }

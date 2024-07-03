@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:groupiq_flutter/views/chat_view.dart';
-import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 import 'package:groupiq_flutter/widgets/chat_card/empty_chat_card.dart';
 
 class VerboseChatCard extends StatefulWidget {
@@ -16,7 +14,7 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
   Widget build(BuildContext context) {
     return EmptyChatCard(
         onTap: () {
-          context.go('/chat');
+          context.push('/chat');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +46,7 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
               'Chat Name',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            Text('Most recent message blah blah blah blah blah blah'),
+            const Text('Most recent message blah blah blah blah blah blah'),
             // Expiry date
             SizedBox(
               height: 5,

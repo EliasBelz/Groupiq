@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:groupiq_flutter/widgets/chat_card/card_column.dart';
 import 'package:groupiq_flutter/widgets/chat_card/explore_chat_card.dart';
 import 'package:groupiq_flutter/widgets/search_bar.dart';
-import 'package:groupiq_flutter/widgets/tag_pill.dart';
 import 'package:groupiq_flutter/widgets/trending_tag_row.dart';
 
 class ExploreView extends StatefulWidget {

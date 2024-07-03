@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-import 'package:groupiq_flutter/services/pocketbase/pocketbase_service.dart';
-import 'package:groupiq_flutter/views/main_view.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class LoginView extends StatefulWidget {
@@ -109,11 +107,11 @@ class _LoginViewState extends State<LoginView> {
               if (!_isLogin) ...[
                 TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value == null ||
@@ -132,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (value) {
                   if (value == null ||
@@ -147,7 +145,7 @@ class _LoginViewState extends State<LoginView> {
               if (!_isLogin)
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: InputDecoration(labelText: 'Confirm Password'),
+                  decoration: const InputDecoration(labelText: 'Confirm Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value != _passwordController.text) {

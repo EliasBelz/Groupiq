@@ -16,5 +16,5 @@ class Message {
       required this.isAdmin,
       DateTime? timePosted,
       this.reactions = const {}})
-      : this.timePosted = timePosted ?? DateTime.now();
+      : timePosted = timePosted ?? DateTime.now();
 }

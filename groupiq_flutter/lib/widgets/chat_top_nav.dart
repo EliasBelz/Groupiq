@@ -1,9 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/widgets.dart';
+import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +23,7 @@ class ChatTopNav extends StatelessWidget implements PreferredSizeWidget {
             // chat avatar
             InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, "chat info");
+                  context.push('/chat_info');
                 },
                 child: const ChatAvatar(
                     borderRadius: 40.0, width: 45.0, height: 45.0)),
@@ -38,7 +35,7 @@ class ChatTopNav extends StatelessWidget implements PreferredSizeWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamed(context, "chat info");
+                      context.push('/chat_info');
                     },
                     child: const Text(
                       "Chat title",

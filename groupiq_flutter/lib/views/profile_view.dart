@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/services/local_storage.dart';
-import 'package:groupiq_flutter/views/main_view.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class ProfileView extends StatelessWidget {
@@ -14,7 +13,7 @@ class ProfileView extends StatelessWidget {
     return Center(
         child: Column(
       children: [
-        Spacer(),
+        const Spacer(),
         const Text('Profile page'),
         ElevatedButton(
           onPressed: () async {

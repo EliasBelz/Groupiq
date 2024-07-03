@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:groupiq_flutter/views/chat_view.dart';
 import 'package:groupiq_flutter/widgets/chat_card/chat_avatar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -30,7 +29,7 @@ class EmptyChatCard extends StatelessWidget {
               child: Row(
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(12.0),
+                    padding: const EdgeInsets.all(12.0),
                     child: ChatAvatar(height: 75.w, width: 75.w),
                   ),
                   Expanded(child: child)
