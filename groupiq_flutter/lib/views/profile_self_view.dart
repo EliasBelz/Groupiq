@@ -5,17 +5,11 @@ import 'package:groupiq_flutter/services/local_storage.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
-class ProfileView extends StatefulWidget {
-  ProfileView({super.key});
-
-  @override
-  State<ProfileView> createState() => _ProfileViewState();
-}
-
-class _ProfileViewState extends State<ProfileView> {
+class ProfileSelfView extends StatelessWidget {
   final GetIt getIt = GetIt.instance;
   final PocketBaseService pocketBaseService =
       GetIt.instance<PocketBaseService>();
+  ProfileSelfView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +21,7 @@ class _ProfileViewState extends State<ProfileView> {
         ElevatedButton(
           onPressed: () async {
             await pocketBaseService.signOut();
-            if (mounted) {
+            if (context.mounted) {
               context.go('/login');
             }
           },

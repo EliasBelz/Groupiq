@@ -7,7 +7,7 @@ import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
 import 'package:groupiq_flutter/views/home_view.dart';
 import 'package:groupiq_flutter/views/login_view.dart';
-import 'package:groupiq_flutter/views/profile_view.dart';
+import 'package:groupiq_flutter/views/profile_self_view.dart';
 import 'package:groupiq_flutter/views/chat_view.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -76,7 +76,7 @@ class _MainViewState extends State<MainView> {
                 path: '/profile',
                 pageBuilder: (context, state) {
                   return CustomTransitionPage<void>(
-                      child: ProfileView(),
+                      child: ProfileSelfView(),
                       transitionsBuilder: _slideTransitionBuilder,
                       transitionDuration: const Duration(milliseconds: 300));
                 }),
