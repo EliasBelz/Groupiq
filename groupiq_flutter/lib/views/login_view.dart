@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class LoginView extends StatefulWidget {
@@ -11,7 +12,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late final PocketBase pb;
+  late final PocketBaseService pocketBaseService;
   final GetIt getIt = GetIt.instance;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -25,10 +26,10 @@ class _LoginViewState extends State<LoginView> {
   @override
   void initState() {
     _formKey = GlobalKey<FormState>();
-    pb = getIt<PocketBase>();
+    pocketBaseService = getIt<PocketBaseService>();
     // Idk if this is good form or not
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (pb.authStore.isValid) {
+      if (pocketBaseService.isSignedIn) {
         context.go('/home');
       }
     });
@@ -60,33 +61,6 @@ class _LoginViewState extends State<LoginView> {
       backgroundColor: Colors.red,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
-  _signUp(
-      {required String username,
-      required String email,
-      required String password,
-      required String passwordConfirm,
-      required String name}) async {
-    final body = <String, dynamic>{
-      "username": username,
-      "email": email,
-      "password": password,
-      "passwordConfirm": passwordConfirm,
-      "name": name,
-    };
-    final record = await pb.collection('users').create(body: body);
-    print(record);
-  }
-
-  _signIn({required String email, required String password}) async {
-    final authData =
-        await pb.collection('users').authWithPassword(email, password);
-    print(authData);
-    print(pb.authStore.isValid);
-    if (mounted) {
-      context.go('/home');
-    }
   }
 
   // TODO show more detailed error messages -> i think you can just pull the status message from the response
@@ -145,7 +119,8 @@ class _LoginViewState extends State<LoginView> {
               if (!_isLogin)
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: const InputDecoration(labelText: 'Confirm Password'),
+                  decoration:
+                      const InputDecoration(labelText: 'Confirm Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value != _passwordController.text) {
@@ -160,9 +135,12 @@ class _LoginViewState extends State<LoginView> {
                   if (_formKey.currentState!.validate()) {
                     if (_isLogin) {
                       try {
-                        await _signIn(
+                        await pocketBaseService.signIn(
                             email: _usernameController.text,
                             password: _passwordController.text);
+                        if (mounted) {
+                          context.go('/home');
+                        }
                       } catch (e) {
                         mounted
                             ? _showSnackBar(context, 'Invalid login')
@@ -170,7 +148,7 @@ class _LoginViewState extends State<LoginView> {
                       }
                     } else {
                       try {
-                        await _signUp(
+                        await pocketBaseService.createUser(
                             username: _usernameController.text,
                             email: _emailController.text,
                             password: _passwordController.text,
