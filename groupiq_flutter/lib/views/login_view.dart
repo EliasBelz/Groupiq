@@ -138,11 +138,11 @@ class _LoginViewState extends State<LoginView> {
                         await pocketBaseService.signIn(
                             email: _usernameController.text,
                             password: _passwordController.text);
-                        if (mounted) {
+                        if (context.mounted) {
                           context.go('/home');
                         }
                       } catch (e) {
-                        mounted
+                        context.mounted
                             ? _showSnackBar(context, 'Invalid login')
                             : null;
                       }
