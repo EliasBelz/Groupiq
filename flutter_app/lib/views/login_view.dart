@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
-import 'package:pocketbase/pocketbase.dart';
+import 'package:groupiq_flutter/widgets/helpers/error_snackbar.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -55,14 +55,6 @@ class _LoginViewState extends State<LoginView> {
     });
   }
 
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      content: Text(message),
-      backgroundColor: Colors.red,
-    );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
-
   // TODO show more detailed error messages -> i think you can just pull the status message from the response
   @override
   Widget build(BuildContext context) {
@@ -101,6 +93,10 @@ class _LoginViewState extends State<LoginView> {
                 controller: _usernameController,
                 decoration: InputDecoration(
                     labelText: 'Username${_isLogin ? ' or Email' : ''}'),
+                validator: (value) =>
+                    value == null || value.isEmpty || value.contains(' ')
+                        ? 'Please enter a valid username'
+                        : null,
               ),
               TextFormField(
                 controller: _passwordController,
@@ -142,9 +138,9 @@ class _LoginViewState extends State<LoginView> {
                           context.go('/home');
                         }
                       } catch (e) {
-                        context.mounted
-                            ? _showSnackBar(context, 'Invalid login')
-                            : null;
+                        if (context.mounted) {
+                          showErrorSnackBar(context, 'Invalid login');
+                        }
                       }
                     } else {
                       try {
@@ -155,9 +151,10 @@ class _LoginViewState extends State<LoginView> {
                             passwordConfirm: _confirmPasswordController.text,
                             name: _nameController.text);
                       } catch (e) {
-                        mounted
-                            ? _showSnackBar(context, 'Invalid sign up')
-                            : null;
+                        if (context.mounted) {
+                          showErrorSnackBar(
+                              context, 'Invalid sign up ${e.toString()}');
+                        }
                       }
                     }
                   }

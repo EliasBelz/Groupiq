@@ -1,25 +1,36 @@
 import 'package:get_it/get_it.dart';
+import 'package:groupiq_flutter/models/user.dart';
+import 'package:groupiq_flutter/providers/current_user_notifier.dart';
 import 'package:groupiq_flutter/services/local_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PocketBaseService {
-  final PocketBase pocketBase;
-  PocketBaseService({required this.pocketBase});
+  final PocketBase pb;
+  final currentUserNotifier = GetIt.instance<CurrentUserNotifier>();
+  PocketBaseService({required this.pb}) {
+    setCurrentUser();
+  }
 
-  bool get isSignedIn => pocketBase.authStore.isValid;
+  setCurrentUser() async {
+    currentUserNotifier.setUser(await getCurrentUser());
+  }
+
+  bool get isSignedIn => pb.authStore.isValid;
 
   Future<void> signOut() async {
-    pocketBase.authStore.clear();
+    pb.authStore.clear();
+    currentUserNotifier.setUser(null);
   }
 
   /// Sign in using email and password
   /// Note: username can be used in place of email
   Future<RecordAuth> signIn(
       {required String email, required String password}) async {
-    return await pocketBase
-        .collection('users')
-        .authWithPassword(email, password);
+    final record =
+        await pb.collection('users').authWithPassword(email, password);
+    currentUserNotifier.setUser(await getCurrentUser());
+    return record;
   }
 
   Future<RecordModel> createUser(
@@ -35,11 +46,25 @@ class PocketBaseService {
       "passwordConfirm": passwordConfirm,
       "name": name,
     };
-    return await pocketBase.collection('users').create(body: body);
+    return await pb.collection('users').create(body: body);
   }
 
-  getUser() {
-    return pocketBase.authStore.model();
+  /// Lazy way to get the current user
+  /// Isn't guaranteed to be up to date
+  getCurrentUserLazy() async {
+    return User.fromMap(pb.authStore.model.data);
+  }
+
+  Future<User> getCurrentUser() async {
+    return await getUserById(pb.authStore.model.id);
+  }
+
+  Uri getAvatar(RecordModel record, String filename) {
+    return pb.files.getUrl(record, filename);
+  }
+
+  Future<User> getUserById(String id) async {
+    return User.fromRecordModel((await pb.collection("users").getOne(id)));
   }
 }
 

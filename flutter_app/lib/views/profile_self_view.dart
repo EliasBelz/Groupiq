@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
-import 'package:groupiq_flutter/services/local_storage.dart';
-import 'package:groupiq_flutter/services/pocketbase_service.dart';
-import 'package:pocketbase/pocketbase.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:groupiq_flutter/controllers/profile_self_view_controller.dart';
+import 'package:groupiq_flutter/widgets/user_avatar.dart';
 
 class ProfileSelfView extends StatelessWidget {
-  final GetIt getIt = GetIt.instance;
-  final PocketBaseService pocketBaseService =
-      GetIt.instance<PocketBaseService>();
+  final ProfileSelfViewController controller = ProfileSelfViewController();
   ProfileSelfView({super.key});
 
   @override
@@ -16,14 +12,25 @@ class ProfileSelfView extends StatelessWidget {
     return Center(
         child: Column(
       children: [
-        const Spacer(),
         const Text('Profile page'),
+        UserAvatar(url: controller.avatarLink()),
+        Text(
+          controller.name(),
+          style: TextStyle(
+            fontSize: 24.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          '@${controller.username()}',
+          style: const TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         ElevatedButton(
           onPressed: () async {
-            await pocketBaseService.signOut();
-            if (context.mounted) {
-              context.go('/login');
-            }
+            await controller.signOut(context);
           },
           child: const Text('Sign Out!'),
         ),
