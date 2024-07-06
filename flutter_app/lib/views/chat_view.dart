@@ -1,6 +1,8 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:groupiq_flutter/models/message.dart';
+import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:groupiq_flutter/widgets/chat_top_nav.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
@@ -13,14 +15,34 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
+  final pb = GetIt.instance<PocketBaseService>().pb;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getMessages();
+    super.initState();
+  }
+
+  getMessages() async {
+    final records = await pb.collection('groupiq_messages').getFullList(
+          sort: '-created',
+        );
+    List<Message> messages =
+        records.map((record) => Message.fromRecordModel(record)).toList();
+    setState(() {
+      this.messages = messages;
+    });
+  }
+
   List<Message> messages = [];
 
   void addMessage(String message) {
     Message newMessage = Message(
-        id: message.length + 1,
+        id: (message.length + 1).toString(),
         text: message,
         posterName: "marina",
-        posterId: 123456,
+        posterId: (123456).toString(),
         isAdmin: false);
 
     setState(() {
