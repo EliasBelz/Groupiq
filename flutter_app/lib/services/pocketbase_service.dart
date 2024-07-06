@@ -1,13 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:groupiq_flutter/models/user.dart';
-import 'package:groupiq_flutter/providers/current_user_notifier.dart';
+import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/services/local_storage.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class PocketBaseService {
   final PocketBase pb;
-  final currentUserNotifier = GetIt.instance<CurrentUserNotifier>();
+  final currentUserNotifier = GetIt.instance<CurrentUserProvider>();
   PocketBaseService({required this.pb}) {
     setCurrentUser();
   }

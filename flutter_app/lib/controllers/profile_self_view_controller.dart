@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/models/user.dart';
-import 'package:groupiq_flutter/providers/current_user_notifier.dart';
+import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:groupiq_flutter/widgets/helpers/error_snackbar.dart';
 
 class ProfileSelfViewController {
   final PocketBaseService pocketBaseService =
       GetIt.instance<PocketBaseService>();
-  CurrentUserNotifier currentUserNotifier =
-      GetIt.instance<CurrentUserNotifier>();
+  CurrentUserProvider currentUserNotifier =
+      GetIt.instance<CurrentUserProvider>();
 
   ProfileSelfViewController();
 
