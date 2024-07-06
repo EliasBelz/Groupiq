@@ -13,22 +13,7 @@ class ChatView extends StatefulWidget {
 }
 
 class _ChatViewState extends State<ChatView> {
-  List<Message> messages = [
-    Message(
-      id: 1,
-      text: "Hello",
-      posterName: "Xx_fishlover_xX",
-      posterId: 123457,
-      isAdmin: false,
-    ),
-    Message(
-      id: 2,
-      text: "This is a longer message.  I think it's nice.",
-      posterName: "marina",
-      posterId: 123456,
-      isAdmin: false,
-    ),
-  ];
+  List<Message> messages = [];
 
   void addMessage(String message) {
     Message newMessage = Message(
@@ -135,8 +120,7 @@ class _InputBarState extends State<InputBar> {
         padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         decoration: const BoxDecoration(
             color: Colors.white,
-            border: Border(
-                top: BorderSide(width: 1.0, color: Colors.black26))),
+            border: Border(top: BorderSide(width: 1.0, color: Colors.black26))),
         child: SafeArea(
           child: Row(
             children: [

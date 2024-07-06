@@ -13,7 +13,11 @@ class PocketBaseService {
   }
 
   setCurrentUser() async {
-    currentUserNotifier.setUser(await getCurrentUser());
+    if (pb.authStore.isValid) {
+      currentUserNotifier.setUser(await getCurrentUser());
+    } else {
+      currentUserNotifier.setUser(null);
+    }
   }
 
   bool get isSignedIn => pb.authStore.isValid;
