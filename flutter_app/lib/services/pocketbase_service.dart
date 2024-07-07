@@ -8,13 +8,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 class PocketBaseService {
   final PocketBase pb;
   final currentUserNotifier = GetIt.instance<CurrentUserProvider>();
-  PocketBaseService({required this.pb}) {
-    setCurrentUser();
-  }
+  PocketBaseService({required this.pb});
 
   setCurrentUser() async {
     if (pb.authStore.isValid) {
-      currentUserNotifier.setUser(await getCurrentUser());
+      final currentUser = await getCurrentUser();
+      currentUserNotifier.setUser(currentUser);
     } else {
       currentUserNotifier.setUser(null);
     }
@@ -59,7 +58,7 @@ class PocketBaseService {
     return User.fromMap(pb.authStore.model.data);
   }
 
-  Future<User> getCurrentUser() async {
+  Future<User?> getCurrentUser() async {
     return await getUserById(pb.authStore.model.id);
   }
 
@@ -67,8 +66,12 @@ class PocketBaseService {
     return pb.files.getUrl(record, filename);
   }
 
-  Future<User> getUserById(String id) async {
-    return User.fromRecordModel((await pb.collection("users").getOne(id)));
+  Future<User?> getUserById(String id) async {
+    try {
+      return User.fromRecordModel((await pb.collection("users").getOne(id)));
+    } catch (e) {
+      return null;
+    }
   }
 }
 

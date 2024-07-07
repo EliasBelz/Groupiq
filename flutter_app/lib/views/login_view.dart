@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:groupiq_flutter/widgets/helpers/error_snackbar.dart';
 
@@ -12,8 +13,9 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late final PocketBaseService pocketBaseService;
   final GetIt getIt = GetIt.instance;
+  late final CurrentUserProvider currentUserProvider;
+  late final PocketBaseService pocketBaseService;
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -27,9 +29,10 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     _formKey = GlobalKey<FormState>();
     pocketBaseService = getIt<PocketBaseService>();
+    currentUserProvider = getIt<CurrentUserProvider>();
     // Idk if this is good form or not
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (pocketBaseService.isSignedIn) {
+      if (currentUserProvider.currentUser != null) {
         context.go('/home');
       }
     });
