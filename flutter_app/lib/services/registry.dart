@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:groupiq_flutter/providers/current_user_provider.dart';
+import 'package:groupiq_flutter/services/groupiq_chat_service.dart';
 import 'package:groupiq_flutter/services/local_storage.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:pocketbase/pocketbase.dart';
@@ -17,6 +18,7 @@ class Registry {
     getIt.registerSingleton<PocketBase>(pocketBase);
     getIt.registerSingleton<PocketBaseService>(
         PocketBaseService(pb: pocketBase));
+    getIt.registerSingleton<GroupiqChatService>(GroupiqChatService());
 
     return getIt.allReady();
   }

@@ -11,8 +11,8 @@ import 'dart:math' as math;
 
 class ChatView extends StatefulWidget {
   // static const id = '660fqfqns4gbt3z'; Elias
-  static const id = '660fqfqns4gbt3z';
-  const ChatView({super.key});
+  final id;
+  const ChatView({required this.id, super.key});
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -20,10 +20,11 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   final pb = GetIt.instance<PocketBaseService>().pb;
-  final chatViewController = ChatViewController(id: ChatView.id);
+  late final ChatViewController chatViewController;
 
   @override
   void initState() {
+    chatViewController = ChatViewController(widget.id);
     chatViewController.init();
     super.initState();
   }
@@ -50,7 +51,7 @@ class _ChatViewState extends State<ChatView> {
                     .messagesStream, // Assuming this is your Stream
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     // TODO maybe do something else on error case
                     return endOfMessages();
@@ -204,7 +205,6 @@ class _InputBarState extends State<InputBar> {
   @override
   void dispose() {
     _controller.dispose();
-
     super.dispose();
   }
 }

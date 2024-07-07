@@ -81,10 +81,12 @@ class _MainViewState extends State<MainView> {
                       transitionDuration: const Duration(milliseconds: 300));
                 }),
             GoRoute(
-              path: '/chat',
+              path: '/chat/:id',
               pageBuilder: (context, state) {
-                return const CustomTransitionPage<void>(
-                    child: ChatView(),
+                return CustomTransitionPage<void>(
+                    child: ChatView(
+                      id: state.pathParameters['id']!,
+                    ),
                     transitionsBuilder: _slideTransitionBuilder,
                     transitionDuration: Duration(milliseconds: 300));
               },

@@ -1,20 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groupiq_flutter/models/chat_card_model.dart';
 import 'package:groupiq_flutter/widgets/chat_card/empty_chat_card.dart';
+import 'package:pocketbase/pocketbase.dart';
 
 class VerboseChatCard extends StatefulWidget {
-  const VerboseChatCard({super.key});
+  final ChatCardModel model;
+  // TODO add other fields
+  const VerboseChatCard({required this.model, super.key});
 
   @override
   State<VerboseChatCard> createState() => _VerboseChatCardState();
 }
 
 class _VerboseChatCardState extends State<VerboseChatCard> {
+  late final String title;
+  late final String id;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    title = widget.model.title;
+    id = widget.model.id;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return EmptyChatCard(
         onTap: () {
-          context.push('/chat');
+          context.push('/chat/$id');
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,8 +57,8 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
                 ),
               ),
             ),
-            const Text(
-              'Chat Name',
+            Text(
+              title,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const Text('Most recent message blah blah blah blah blah blah'),

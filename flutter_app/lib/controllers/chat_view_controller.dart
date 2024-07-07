@@ -13,7 +13,7 @@ class ChatViewController {
   final StreamController<List<Message>> _messagesController =
       StreamController.broadcast();
   Stream<List<Message>> get messagesStream => _messagesController.stream;
-  ChatViewController({required this.id});
+  ChatViewController(this.id);
 
   init() async {
     _messagesController.add(await getMessages());
