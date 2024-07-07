@@ -20,15 +20,32 @@ class Message {
       this.reactions = const {}})
       : timePosted = timePosted ?? DateTime.now();
 
-  factory Message.fromRecordModel(RecordModel record) {
+  factory Message.fromMap(Map<String, dynamic> map) {
     return Message(
-      id: record.data['message_id'] ?? '',
-      text: record.data['message_text'] ?? '',
-      posterName: record.data['username'] ?? '',
-      posterId: record.data['user_id'] ?? '',
-      isAdmin: record.data['isAdmin'] ?? false,
-      timePosted: DateTime.tryParse(record.created) ?? DateTime.now(),
-      reactions: record.data['reactions'] ?? {},
+      id: map['message_id'] ?? '',
+      text: map['message_text'] ?? '',
+      posterName: map['username'] ?? '',
+      posterId: map['user_id'] ?? '',
+      isAdmin: map['isAdmin'] ?? false,
+      timePosted: DateTime.tryParse(map['created']) ?? DateTime.now(),
+      reactions: map['reactions'] ?? {},
     );
+  }
+
+  factory Message.fromExpandedMessageRecordModel(RecordModel record) {
+    final map = record.toJson();
+    return Message(
+      id: map['id'] ?? '',
+      text: map['text'] ?? '',
+      posterName: map['expand']['user_id']['username'] ?? '',
+      posterId: map['user_id'] ?? '',
+      isAdmin: map['isAdmin'] ?? false,
+      timePosted: DateTime.tryParse(map['created']) ?? DateTime.now(),
+      reactions: map['reactions'] ?? {},
+    );
+  }
+
+  factory Message.fromRecordModel(RecordModel record) {
+    return Message.fromMap(record.toJson());
   }
 }

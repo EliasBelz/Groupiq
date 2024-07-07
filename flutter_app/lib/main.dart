@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/services/registry.dart';
 import 'package:groupiq_flutter/views/main_view.dart';
 import 'firebase_options.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

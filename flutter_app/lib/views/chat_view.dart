@@ -1,13 +1,17 @@
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:groupiq_flutter/controllers/chat_view_controller.dart';
 import 'package:groupiq_flutter/models/message.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:groupiq_flutter/widgets/chat_top_nav.dart';
+import 'package:groupiq_flutter/widgets/helpers/error_snackbar.dart';
 import 'package:intl/intl.dart';
 import 'dart:math' as math;
 
 class ChatView extends StatefulWidget {
+  // static const id = '660fqfqns4gbt3z'; Elias
+  static const id = '660fqfqns4gbt3z';
   const ChatView({super.key});
 
   @override
@@ -16,64 +20,69 @@ class ChatView extends StatefulWidget {
 
 class _ChatViewState extends State<ChatView> {
   final pb = GetIt.instance<PocketBaseService>().pb;
+  final chatViewController = ChatViewController(id: ChatView.id);
 
   @override
   void initState() {
-    // TODO: implement initState
-    getMessages();
+    chatViewController.init();
     super.initState();
   }
 
-  getMessages() async {
-    final records = await pb.collection('groupiq_messages').getFullList(
-          sort: '-created',
-        );
-    List<Message> messages =
-        records.map((record) => Message.fromRecordModel(record)).toList();
-    setState(() {
-      this.messages = messages;
-    });
-  }
-
-  List<Message> messages = [];
-
-  void addMessage(String message) {
-    Message newMessage = Message(
-        id: (message.length + 1).toString(),
-        text: message,
-        posterName: "marina",
-        posterId: (123456).toString(),
-        isAdmin: false);
-
-    setState(() {
-      messages.insert(0, newMessage);
-    });
+  @override
+  void dispose() {
+    chatViewController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Message> messages = [];
     return Scaffold(
       appBar: const ChatTopNav(),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Expanded(
-              child: Container(
-            decoration: const BoxDecoration(color: Colors.white),
-            child: ListView.builder(
-              reverse: true,
-              shrinkWrap: true,
-              itemCount: messages.length + 1,
-              itemBuilder: (context, index) {
-                return index == messages.length
-                    ? endOfMessages()
-                    : MessageWidget(message: messages[index]);
-              },
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: StreamBuilder<List<Message>>(
+                stream: chatViewController
+                    .messagesStream, // Assuming this is your Stream
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    // TODO maybe do something else on error case
+                    return endOfMessages();
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return endOfMessages();
+                  } else {
+                    List<Message> newMessages = snapshot.data!;
+                    messages.insertAll(0, newMessages);
+                    return ListView.builder(
+                      reverse: true,
+                      shrinkWrap: true,
+                      itemCount: messages.length + 1,
+                      itemBuilder: (context, index) {
+                        return index == messages.length
+                            ? endOfMessages() // Your method to indicate the end of messages
+                            : MessageWidget(
+                                message: messages[
+                                    index]); // Your custom widget to display a message
+                      },
+                    );
+                  }
+                },
+              ),
             ),
-          )),
+          ),
           InputBar(
-            onSend: (message) {
-              addMessage(message);
+            onSend: (message) async {
+              try {
+                chatViewController.sendMessage(message);
+              } catch (e) {
+                showErrorSnackBar(context, 'Message Failed to send.');
+              }
             },
           ),
         ],
@@ -195,6 +204,7 @@ class _InputBarState extends State<InputBar> {
   @override
   void dispose() {
     _controller.dispose();
+
     super.dispose();
   }
 }
