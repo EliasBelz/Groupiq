@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/views/app_shell.dart';
 import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
@@ -34,7 +35,11 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     super.initState();
-    isLoggedIn = widget.pb.authStore.isValid;
+    final pb = widget.pb;
+    final currentUserProvider = widget.getIt<CurrentUserProvider>();
+
+    isLoggedIn =
+        pb.authStore.isValid && currentUserProvider.currentUser != null;
 
     router = GoRouter(
       navigatorKey: rootNavigatorKey,
@@ -48,7 +53,7 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: '/',
               pageBuilder: (context, state) {
-                return const CustomTransitionPage<void>(
+                return CustomTransitionPage<void>(
                   child: LoginView(),
                   transitionsBuilder: _slideTransitionBuilder,
                   transitionDuration: Duration(milliseconds: 300),
@@ -58,7 +63,7 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: '/home',
               pageBuilder: (context, state) {
-                return const CustomTransitionPage<void>(
+                return CustomTransitionPage<void>(
                   child: HomeView(),
                   transitionsBuilder: _slideTransitionBuilder,
                   transitionDuration: Duration(milliseconds: 300),
@@ -68,7 +73,7 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: '/explore',
               pageBuilder: (context, state) {
-                return const CustomTransitionPage<void>(
+                return CustomTransitionPage<void>(
                   child: ExploreView(),
                   transitionsBuilder: _slideTransitionBuilder,
                   transitionDuration: Duration(milliseconds: 300),
@@ -86,13 +91,14 @@ class _MainViewState extends State<MainView> {
               },
             ),
             GoRoute(
-              path: '/chat',
+              path: '/chat/:id',
               pageBuilder: (context, state) {
-                return const CustomTransitionPage<void>(
-                  child: ChatView(),
-                  transitionsBuilder: _slideTransitionBuilder,
-                  transitionDuration: Duration(milliseconds: 300),
-                );
+                return CustomTransitionPage<void>(
+                    child: ChatView(
+                      id: state.pathParameters['id']!,
+                    ),
+                    transitionsBuilder: _slideTransitionBuilder,
+                    transitionDuration: Duration(milliseconds: 300));
               },
             ),
             GoRoute(
