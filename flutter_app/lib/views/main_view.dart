@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/views/app_shell.dart';
 import 'package:groupiq_flutter/views/chat_info_view.dart';
 import 'package:groupiq_flutter/views/explore_view.dart';
@@ -28,7 +29,9 @@ class _MainViewState extends State<MainView> {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     final pb = widget.pb;
-    final isLoggedIn = pb.authStore.isValid;
+    final currentUserProvider = widget.getIt<CurrentUserProvider>();
+    final isLoggedIn =
+        pb.authStore.isValid && currentUserProvider.currentUser != null;
     final GlobalKey<NavigatorState> rootNavigatorKey =
         GlobalKey<NavigatorState>();
 
@@ -45,14 +48,14 @@ class _MainViewState extends State<MainView> {
             return AppShell(child: child);
           },
 
-          /// Shell Routes
+          /// Shell Routes that show bottom nav bar
           routes: [
             GoRoute(
                 path:
                     '/', // Made the default route the login view because it felt safer?
                 pageBuilder: (context, state) {
                   return const CustomTransitionPage<void>(
-                      child: LoginView(),
+                      child: HomeView(),
                       transitionsBuilder: _slideTransitionBuilder,
                       transitionDuration: Duration(milliseconds: 300));
                 }),
@@ -81,10 +84,12 @@ class _MainViewState extends State<MainView> {
                       transitionDuration: const Duration(milliseconds: 300));
                 }),
             GoRoute(
-              path: '/chat',
+              path: '/chat/:id',
               pageBuilder: (context, state) {
-                return const CustomTransitionPage<void>(
-                    child: ChatView(),
+                return CustomTransitionPage<void>(
+                    child: ChatView(
+                      id: state.pathParameters['id']!,
+                    ),
                     transitionsBuilder: _slideTransitionBuilder,
                     transitionDuration: Duration(milliseconds: 300));
               },
