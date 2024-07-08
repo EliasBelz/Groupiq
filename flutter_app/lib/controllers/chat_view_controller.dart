@@ -3,16 +3,20 @@ import 'package:get_it/get_it.dart';
 import 'package:groupiq_flutter/models/message.dart';
 import 'package:groupiq_flutter/models/user.dart';
 import 'package:groupiq_flutter/providers/current_user_provider.dart';
+import 'package:groupiq_flutter/services/groupiq_chat_service.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class ChatViewController {
+  final String id;
   final pb = GetIt.instance<PocketBaseService>().pb;
   final User user = GetIt.instance<CurrentUserProvider>().currentUser!;
-  final String id;
+  final groupiqChatService = GetIt.instance<GroupiqChatService>();
+
   final StreamController<List<Message>> _messagesController =
       StreamController.broadcast();
   Stream<List<Message>> get messagesStream => _messagesController.stream;
+
   ChatViewController(this.id);
 
   init() async {

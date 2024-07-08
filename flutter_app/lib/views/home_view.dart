@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groupiq_flutter/controllers/home_view_controller.dart';
-import 'package:groupiq_flutter/models/chat_card_model.dart';
+import 'package:groupiq_flutter/models/chat_detail_model.dart';
 import 'package:groupiq_flutter/widgets/chat_card/card_column.dart';
 import 'package:groupiq_flutter/widgets/dm_bar.dart';
 import 'package:groupiq_flutter/widgets/chat_card/verbose_chat_card.dart';
@@ -30,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    List<ChatCardModel> recentGroupiqs = [];
+    List<ChatDetailModel> recentGroupiqs = [];
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -60,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(child: Text('No recent groupiqs'));
                       } else {
-                        List<ChatCardModel> newGroupiqs = snapshot.data!;
+                        List<ChatDetailModel> newGroupiqs = snapshot.data!;
                         recentGroupiqs.insertAll(0, newGroupiqs);
                         // recentGroupiqs = recentGroupiqs.take(5).toList();
                         List<Widget> chatCards = recentGroupiqs

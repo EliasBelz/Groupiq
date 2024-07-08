@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:groupiq_flutter/models/chat_card_model.dart';
+import 'package:groupiq_flutter/models/chat_detail_model.dart';
 import 'package:groupiq_flutter/widgets/chat_card/empty_chat_card.dart';
 import 'package:pocketbase/pocketbase.dart';
 
 class VerboseChatCard extends StatefulWidget {
-  final ChatCardModel model;
+  final ChatDetailModel model;
   // TODO add other fields
   const VerboseChatCard({required this.model, super.key});
 

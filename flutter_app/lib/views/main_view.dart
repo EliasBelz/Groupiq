@@ -48,14 +48,14 @@ class _MainViewState extends State<MainView> {
             return AppShell(child: child);
           },
 
-          /// Shell Routes
+          /// Shell Routes that show bottom nav bar
           routes: [
             GoRoute(
                 path:
                     '/', // Made the default route the login view because it felt safer?
                 pageBuilder: (context, state) {
                   return const CustomTransitionPage<void>(
-                      child: LoginView(),
+                      child: HomeView(),
                       transitionsBuilder: _slideTransitionBuilder,
                       transitionDuration: Duration(milliseconds: 300));
                 }),

@@ -32,6 +32,7 @@ class PocketBaseService {
       {required String email, required String password}) async {
     final record =
         await pb.collection('users').authWithPassword(email, password);
+    // pb.authStore.save(record.token, record);
     currentUserNotifier.setUser(await getCurrentUser());
     return record;
   }
