@@ -72,183 +72,185 @@ class _SignUpViewState extends State<SignUpView>
 
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0, 115, 248, 1),
-      body: Stack(children: [
-        Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-            image: const AssetImage("assets/images/signup-bg.png"),
-            fit: BoxFit.cover,
-          )),
-          child: SizedBox(
-            width: screenSize.width,
-            height: screenSize.height,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Form(
-                    key: _formKey,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10.0),
-                            child: Text(
-                              "Sign Up",
-                              style: customDisplayLargeStyle,
-                            ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+          image: const AssetImage("assets/images/signup-bg.png"),
+          fit: BoxFit.cover,
+        )),
+        child: SizedBox(
+          width: screenSize.width,
+          height: screenSize.height,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Text(
+                            "Sign Up",
+                            style: customDisplayLargeStyle,
                           ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25.0),
-                            child: Text(
-                              "We don’t need that much to get started- just a password and an email to confirm you’re a real person.",
-                              style: customBodyMediumStyle,
-                              textAlign: TextAlign.center,
-                            ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: Text(
+                            "We don’t need that much to get started- just a password and an email to confirm you’re a real person.",
+                            style: customBodyMediumStyle,
+                            textAlign: TextAlign.center,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 50.0),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.0),
-                                  child: TextFormField(
-                                    controller: _emailController,
-                                    style: customBodyMediumStyle,
-                                    validator: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter an email';
-                                      }
-                                      return null;
-                                    },
-                                    decoration: const InputDecoration(
-                                      labelText: 'Email',
-                                    ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 50.0),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10.0),
+                                child: TextFormField(
+                                  controller: _emailController,
+                                  style: customBodyMediumStyle,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter an email';
+                                    }
+                                    return null;
+                                  },
+                                  decoration: const InputDecoration(
+                                    labelText: 'Email',
                                   ),
                                 ),
-                                if (_showAdditionalFields)
-                                  SlideTransition(
-                                    position: _offsetAnimation,
-                                    child: AnimatedOpacity(
-                                      opacity:
-                                          _showAdditionalFields ? 1.0 : 0.0,
-                                      duration: Duration(milliseconds: 500),
-                                      child: Column(
-                                        children: [
-                                          Padding(
+                              ),
+                              if (_showAdditionalFields)
+                                SlideTransition(
+                                  position: _offsetAnimation,
+                                  child: AnimatedOpacity(
+                                    opacity: _showAdditionalFields ? 1.0 : 0.0,
+                                    duration: const Duration(milliseconds: 500),
+                                    child: Column(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10.0),
+                                          child: TextFormField(
+                                            controller: _passwordController,
+                                            style: customBodyMediumStyle,
+                                            decoration: const InputDecoration(
+                                              labelText: 'Password',
+                                            ),
+                                            validator: (value) {
+                                              if (value == null ||
+                                                  value.isEmpty) {
+                                                return 'Please enter a password';
+                                              } else if (value !=
+                                                  _passwordConfirmController
+                                                      .value.text
+                                                      .toString()) {
+                                                return 'Passwords must match!';
+                                              }
+                                              return null;
+                                            },
+                                            obscureText: true,
+                                          ),
+                                        ),
+                                        Padding(
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 10.0),
                                             child: TextFormField(
-                                              controller: _passwordController,
+                                              controller:
+                                                  _passwordConfirmController,
                                               style: customBodyMediumStyle,
                                               decoration: const InputDecoration(
-                                                labelText: 'Password',
-                                              ),
+                                                  labelText:
+                                                      'Confirm Password'),
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
                                                   return 'Please enter a password';
                                                 } else if (value !=
-                                                    _passwordConfirmController
-                                                        .value.text
-                                                        .toString()) {
+                                                    _passwordController
+                                                        .value.text) {
                                                   return 'Passwords must match!';
                                                 }
+
                                                 return null;
                                               },
                                               obscureText: true,
-                                            ),
-                                          ),
-                                          Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 10.0),
-                                              child: TextFormField(
-                                                controller:
-                                                    _passwordConfirmController,
-                                                style: customBodyMediumStyle,
-                                                decoration:
-                                                    const InputDecoration(
-                                                        labelText:
-                                                            'Confirm Password'),
-                                                validator: (value) {
-                                                  if (value == null ||
-                                                      value.isEmpty) {
-                                                    return 'Please enter a password';
-                                                  } else if (value !=
-                                                      _passwordController
-                                                          .value.text) {
-                                                    return 'Passwords must match!';
-                                                  }
-
-                                                  return null;
-                                                },
-                                                obscureText: true,
-                                              ))
-                                        ],
-                                      ),
+                                            ))
+                                      ],
                                     ),
-                                  )
-                              ],
-                            ),
+                                  ),
+                                )
+                            ],
                           ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate() &&
-                                  !_showAdditionalFields) {
-                                setState(() {
-                                  _showAdditionalFields = true;
-                                });
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate() &&
+                                !_showAdditionalFields) {
+                              setState(() {
+                                _showAdditionalFields = true;
+                              });
 
-                                _slideInAnimController.forward();
-                              } else {
-                                try {
-                                  Random random = Random();
-                                  String userId =
-                                      "user${Random().nextInt(999999).toString().padLeft(6, '0')}";
+                              _slideInAnimController.forward();
+                            } else {
+                              try {
+                                Random random = Random();
+                                String userId =
+                                    "user${Random().nextInt(999999).toString().padLeft(6, '0')}";
 
-                                  print(userId);
+                                await pocketBaseService.createUser(
+                                    username: userId,
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                    passwordConfirm:
+                                        _passwordConfirmController.text,
+                                    name: "Groupiq User");
 
-                                  await pocketBaseService.createUser(
-                                      username: userId,
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                      passwordConfirm:
-                                          _passwordConfirmController.text,
-                                      name: "Groupiq User");
-
-                                  print("SUCCESS!");
-                                } catch (e) {
-                                  if (context.mounted) {
-                                    showErrorSnackBar(context,
-                                        'Invalid sign up ${e.toString()}');
-                                  }
+                                if (context.mounted) {
+                                  context.go('/login/verify');
+                                }
+                              } catch (e) {
+                                if (context.mounted) {
+                                  showErrorSnackBar(context,
+                                      'Invalid sign up ${e.toString()}');
                                 }
                               }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 50.0, vertical: 10.0),
-                              child: Text(
-                                  _showAdditionalFields ? "Sign Up" : "Next!",
-                                  style: GoogleFonts.nunitoSans(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700,
-                                      color: const Color.fromRGBO(
-                                          86, 144, 255, 1))),
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                        ],
-                      ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50.0, vertical: 10.0),
+                            child: Text(
+                                _showAdditionalFields ? "Sign Up" : "Next!",
+                                style: GoogleFonts.nunitoSans(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color:
+                                        const Color.fromRGBO(86, 144, 255, 1))),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -256,20 +258,7 @@ class _SignUpViewState extends State<SignUpView>
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 50.0, horizontal: 10.0),
-          child: IconButton(
-            icon: const Icon(
-              CommunityMaterialIcons.chevron_left,
-              size: 40.0,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ]),
+      ),
     );
   }
 }

@@ -11,6 +11,7 @@ import 'package:groupiq_flutter/views/login_view.dart';
 import 'package:groupiq_flutter/views/signup_view.dart';
 import 'package:groupiq_flutter/views/profile_self_view.dart';
 import 'package:groupiq_flutter/views/chat_view.dart';
+import 'package:groupiq_flutter/views/verification_view.dart';
 import 'package:pocketbase/pocketbase.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -43,7 +44,8 @@ class _MainViewState extends State<MainView> {
 
     router = GoRouter(
       navigatorKey: rootNavigatorKey,
-      initialLocation: isLoggedIn ? '/home' : '/login',
+      // initialLocation: isLoggedIn ? '/home' : '/login',
+      initialLocation: '/login/verify',
       routes: [
         ShellRoute(
           builder: (context, state, child) {
@@ -120,6 +122,10 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: 'signup',
               builder: (context, state) => const SignUpView(),
+            ),
+            GoRoute(
+              path: 'verify',
+              builder: (context, state) => const VerificationView(),
             ),
           ],
         ),
