@@ -10,32 +10,40 @@ class HomeViewController {
   final groupiqChatService = GetIt.instance<GroupiqChatService>();
   final StreamController<List<ChatDetailModel>> _recentGroupiqsController =
       StreamController.broadcast();
+  bool _isControllerClosed = false;
+
   Stream<List<ChatDetailModel>> get recentGroupiqsStream =>
       _recentGroupiqsController.stream;
   final pb = GetIt.instance<PocketBaseService>().pb;
 
   init() async {
     final groupiqs = await getChatPage();
-
     List<ChatDetailModel> chatCards = groupiqs
         .map((record) => ChatDetailModel.fromRecordModel(record))
         .toList();
-    _recentGroupiqsController.add(chatCards);
+    _safeAddEvent(chatCards);
 
     pb.collection('groupiqs').subscribe('*', (e) {
       if (e.action == "create" && e.record != null) {
         final chatCard = ChatDetailModel.fromRecordModel(e.record!);
-        _recentGroupiqsController.add([chatCard]);
+        _safeAddEvent([chatCard]);
       }
     });
   }
 
   dispose() async {
     _recentGroupiqsController.close();
+    _isControllerClosed = true;
     await pb.collection('groupiqs').unsubscribe('*');
   }
 
   Future<List<RecordModel>> getChatPage() async {
     return (await groupiqChatService.getChatPage()).items;
+  }
+
+  void _safeAddEvent(List<ChatDetailModel> chatCards) {
+    if (!_isControllerClosed) {
+      _recentGroupiqsController.add(chatCards);
+    }
   }
 }
