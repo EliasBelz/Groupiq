@@ -19,7 +19,7 @@ class ChatViewController {
 
   ChatViewController(this.id);
 
-  init() async {
+  Future<void> init() async {
     _messagesController.add(await getMessages());
     await pb.collection('messages').subscribe(
       '*',
