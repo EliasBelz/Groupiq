@@ -24,6 +24,8 @@ class _SignUpViewState extends State<SignUpView>
       TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _showAdditionalFields = false;
+  bool _passwordVisible = false;
+  bool _passwordConfirmVisible = false;
 
   late AnimationController _slideInAnimController;
   late Animation<Offset> _offsetAnimation;
@@ -74,7 +76,7 @@ class _SignUpViewState extends State<SignUpView>
       backgroundColor: const Color.fromRGBO(0, 115, 248, 1),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
@@ -83,7 +85,7 @@ class _SignUpViewState extends State<SignUpView>
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-          image: const AssetImage("assets/images/signup-bg.png"),
+          image: AssetImage("assets/images/signup-bg.png"),
           fit: BoxFit.cover,
         )),
         child: SizedBox(
@@ -150,9 +152,22 @@ class _SignUpViewState extends State<SignUpView>
                                           child: TextFormField(
                                             controller: _passwordController,
                                             style: customBodyMediumStyle,
-                                            decoration: const InputDecoration(
-                                              labelText: 'Password',
-                                            ),
+                                            decoration: InputDecoration(
+                                                labelText: 'Password',
+                                                suffixIcon: IconButton(
+                                                  icon: Icon(_passwordVisible
+                                                      ? CommunityMaterialIcons
+                                                          .eye_outline
+                                                      : CommunityMaterialIcons
+                                                          .eye_off_outline),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _passwordVisible =
+                                                          !_passwordVisible;
+                                                    });
+                                                  },
+                                                  color: Colors.white,
+                                                )),
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
@@ -165,7 +180,7 @@ class _SignUpViewState extends State<SignUpView>
                                               }
                                               return null;
                                             },
-                                            obscureText: true,
+                                            obscureText: !_passwordVisible,
                                           ),
                                         ),
                                         Padding(
@@ -175,9 +190,22 @@ class _SignUpViewState extends State<SignUpView>
                                               controller:
                                                   _passwordConfirmController,
                                               style: customBodyMediumStyle,
-                                              decoration: const InputDecoration(
-                                                  labelText:
-                                                      'Confirm Password'),
+                                              decoration: InputDecoration(
+                                                  labelText: 'Confirm Password',
+                                                  suffixIcon: IconButton(
+                                                    icon: Icon(_passwordConfirmVisible
+                                                        ? CommunityMaterialIcons
+                                                            .eye_outline
+                                                        : CommunityMaterialIcons
+                                                            .eye_off_outline),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _passwordConfirmVisible =
+                                                            !_passwordConfirmVisible;
+                                                      });
+                                                    },
+                                                    color: Colors.white,
+                                                  )),
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
@@ -190,7 +218,8 @@ class _SignUpViewState extends State<SignUpView>
 
                                                 return null;
                                               },
-                                              obscureText: true,
+                                              obscureText:
+                                                  !_passwordConfirmVisible,
                                             ))
                                       ],
                                     ),
@@ -201,34 +230,35 @@ class _SignUpViewState extends State<SignUpView>
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            if (_formKey.currentState!.validate() &&
-                                !_showAdditionalFields) {
-                              setState(() {
-                                _showAdditionalFields = true;
-                              });
+                            if (_formKey.currentState!.validate()) {
+                              if (!_showAdditionalFields) {
+                                setState(() {
+                                  _showAdditionalFields = true;
+                                });
 
-                              _slideInAnimController.forward();
-                            } else {
-                              try {
-                                Random random = Random();
-                                String userId =
-                                    "user${Random().nextInt(999999).toString().padLeft(6, '0')}";
+                                _slideInAnimController.forward();
+                              } else {
+                                try {
+                                  Random random = Random();
+                                  String userId =
+                                      "user${Random().nextInt(999999).toString().padLeft(6, '0')}";
 
-                                await pocketBaseService.createUser(
-                                    username: userId,
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                    passwordConfirm:
-                                        _passwordConfirmController.text,
-                                    name: "Groupiq User");
+                                  await pocketBaseService.createUser(
+                                      username: userId,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                      passwordConfirm:
+                                          _passwordConfirmController.text,
+                                      name: "Groupiq User");
 
-                                if (context.mounted) {
-                                  context.go('/login/verify');
-                                }
-                              } catch (e) {
-                                if (context.mounted) {
-                                  showErrorSnackBar(context,
-                                      'Invalid sign up ${e.toString()}');
+                                  if (context.mounted) {
+                                    context.go('/login/verify');
+                                  }
+                                } catch (e) {
+                                  if (context.mounted) {
+                                    showErrorSnackBar(context,
+                                        'Invalid sign up ${e.toString()}');
+                                  }
                                 }
                               }
                             }

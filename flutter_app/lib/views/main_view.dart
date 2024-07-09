@@ -44,8 +44,7 @@ class _MainViewState extends State<MainView> {
 
     router = GoRouter(
       navigatorKey: rootNavigatorKey,
-      // initialLocation: isLoggedIn ? '/home' : '/login',
-      initialLocation: '/login/verify',
+      initialLocation: isLoggedIn ? '/home' : '/login',
       routes: [
         ShellRoute(
           builder: (context, state, child) {

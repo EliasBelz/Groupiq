@@ -1,3 +1,4 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +21,7 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _passwordVisible = false;
 
   @override
   void initState() {
@@ -100,16 +102,25 @@ class _LoginViewState extends State<LoginView> {
                       TextFormField(
                         controller: _passwordController,
                         style: customBodyMediumStyle,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                        ),
+                        decoration: InputDecoration(
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                                icon: Icon(_passwordVisible
+                                    ? CommunityMaterialIcons.eye_outline
+                                    : CommunityMaterialIcons.eye_off_outline),
+                                color: Colors.white)),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter a password';
                           }
                           return null;
                         },
-                        obscureText: true,
+                        obscureText: !_passwordVisible,
                       ),
                     ],
                   ),
