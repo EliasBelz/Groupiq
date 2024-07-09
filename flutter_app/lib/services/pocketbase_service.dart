@@ -19,7 +19,7 @@ class PocketBaseService {
     }
   }
 
-  bool get isSignedIn => pb.authStore.isValid;
+  bool get isSignedIn => currentUserNotifier.currentUser != null;
 
   Future<void> signOut() async {
     pb.authStore.clear();
