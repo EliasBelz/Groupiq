@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:groupiq_flutter/models/verif_props.dart';
 
 class VerificationView extends StatelessWidget {
-  const VerificationView({super.key});
+  VerifProps? props;
+  VerificationView({super.key, this.props});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +46,7 @@ class VerificationView extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
-                          "We’ve sent an email to [EMAIL].  Before using Groupiq, you’ll need to verify your email through the link included in the email.",
+                          "We’ve sent an email to ${props?.email ?? "your email"}.  Before using Groupiq, you’ll need to verify your email through the link included in the email.",
                           style: customBodyMediumStyle,
                           textAlign: TextAlign.center,
                         ),

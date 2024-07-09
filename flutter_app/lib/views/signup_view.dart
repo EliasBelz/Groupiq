@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:groupiq_flutter/models/verif_props.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:groupiq_flutter/widgets/helpers/error_snackbar.dart';
 import 'dart:math';
@@ -252,7 +253,9 @@ class _SignUpViewState extends State<SignUpView>
                                       name: "Groupiq User");
 
                                   if (context.mounted) {
-                                    context.go('/login/verify');
+                                    VerifProps props = VerifProps(
+                                        email: _emailController.text);
+                                    context.go('/login/verify', extra: props);
                                   }
                                 } catch (e) {
                                   if (context.mounted) {

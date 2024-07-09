@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:groupiq_flutter/models/verif_props.dart';
 import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/views/app_shell.dart';
 import 'package:groupiq_flutter/views/chat_info_view.dart';
@@ -123,9 +124,12 @@ class _MainViewState extends State<MainView> {
               builder: (context, state) => const SignUpView(),
             ),
             GoRoute(
-              path: 'verify',
-              builder: (context, state) => const VerificationView(),
-            ),
+                path: 'verify',
+                name: 'verify',
+                builder: (context, state) {
+                  VerifProps sample = state.extra as VerifProps;
+                  return VerificationView(props: sample);
+                }),
           ],
         ),
       ],
