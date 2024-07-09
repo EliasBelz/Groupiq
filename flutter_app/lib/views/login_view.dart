@@ -1,6 +1,8 @@
+import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:groupiq_flutter/providers/current_user_provider.dart';
 import 'package:groupiq_flutter/services/pocketbase_service.dart';
 import 'package:groupiq_flutter/widgets/helpers/error_snackbar.dart';
@@ -17,17 +19,12 @@ class _LoginViewState extends State<LoginView> {
   late final CurrentUserProvider currentUserProvider;
   late final PocketBaseService pocketBaseService;
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-  late GlobalKey<FormState> _formKey;
-  bool _isLogin = true;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool _passwordVisible = false;
 
   @override
   void initState() {
-    _formKey = GlobalKey<FormState>();
     pocketBaseService = getIt<PocketBaseService>();
     currentUserProvider = getIt<CurrentUserProvider>();
     // Idk if this is good form or not
@@ -42,97 +39,95 @@ class _LoginViewState extends State<LoginView> {
   @override
   void dispose() {
     _usernameController.dispose();
-    _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    _nameController.dispose();
     super.dispose();
   }
 
-  void _toggleFormType() {
-    setState(() {
-      _isLogin = !_isLogin;
-      // I feel like tou shouldn't have to do this, but the text fields don't clear otherwise
-      // I did this to force a rerender
-      _formKey = GlobalKey<FormState>();
-    });
-  }
-
-  // TODO show more detailed error messages -> i think you can just pull the status message from the response
   @override
   Widget build(BuildContext context) {
+    TextStyle customBodyMediumStyle =
+        Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white);
+    TextStyle customDisplayLargeStyle =
+        Theme.of(context).textTheme.displayLarge!.copyWith(color: Colors.white);
+
     return Scaffold(
-      key: GlobalKey<ScaffoldState>(),
-      appBar: AppBar(
-        title: Text(_isLogin ? 'Login' : 'Sign Up'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (!_isLogin) ...[
-                TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
+      backgroundColor: const Color.fromRGBO(0, 115, 248, 1),
+      body: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+          image: const AssetImage("assets/images/login-bg.png"),
+          fit: BoxFit.cover,
+        )),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: Text(
+                    "Log In",
+                    style: customDisplayLargeStyle,
+                  ),
                 ),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null ||
-                        value.isEmpty ||
-                        !value.contains('@')) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Text(
+                    "Before you start using Groupiq, you’ll need to log in",
+                    style: customBodyMediumStyle,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ],
-              TextFormField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                    labelText: 'Username${_isLogin ? ' or Email' : ''}'),
-                validator: (value) =>
-                    value == null || value.isEmpty || value.contains(' ')
-                        ? 'Please enter a valid username'
-                        : null,
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.length < 8 ||
-                      value.length > 72) {
-                    return 'Password must be at least 8 characters long';
-                  }
-                  return null;
-                },
-              ),
-              if (!_isLogin)
-                TextFormField(
-                  controller: _confirmPasswordController,
-                  decoration:
-                      const InputDecoration(labelText: 'Confirm Password'),
-                  obscureText: true,
-                  validator: (value) {
-                    if (value != _passwordController.text) {
-                      return 'Passwords do not match';
-                    }
-                    return null;
-                  },
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 50.0),
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: _usernameController,
+                        style: customBodyMediumStyle,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a username or email';
+                          }
+                          return null;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Username or Email',
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: _passwordController,
+                        style: customBodyMediumStyle,
+                        decoration: InputDecoration(
+                            labelText: 'Password',
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _passwordVisible = !_passwordVisible;
+                                  });
+                                },
+                                icon: Icon(_passwordVisible
+                                    ? CommunityMaterialIcons.eye_outline
+                                    : CommunityMaterialIcons.eye_off_outline),
+                                color: Colors.white)),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          }
+                          return null;
+                        },
+                        obscureText: !_passwordVisible,
+                      ),
+                    ],
+                  ),
                 ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    if (_isLogin) {
+                ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
                       try {
                         await pocketBaseService.signIn(
                             email: _usernameController.text,
@@ -145,32 +140,31 @@ class _LoginViewState extends State<LoginView> {
                           showErrorSnackBar(context, 'Invalid login');
                         }
                       }
-                    } else {
-                      try {
-                        await pocketBaseService.createUser(
-                            username: _usernameController.text,
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                            passwordConfirm: _confirmPasswordController.text,
-                            name: _nameController.text);
-                      } catch (e) {
-                        if (context.mounted) {
-                          showErrorSnackBar(
-                              context, 'Invalid sign up ${e.toString()}');
-                        }
-                      }
                     }
-                  }
-                },
-                child: Text(_isLogin ? 'Login' : 'Create Account'),
-              ),
-              TextButton(
-                onPressed: _toggleFormType,
-                child: Text(_isLogin
-                    ? 'Need an account? Sign up.'
-                    : 'Have an account? Log in.'),
-              ),
-            ],
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50.0, vertical: 10.0),
+                    child: Text('Log in',
+                        style: GoogleFonts.nunitoSans(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: const Color.fromRGBO(86, 144, 255, 1))),
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      context.go('/login/signup');
+                    },
+                    child: Text("Don't have an account?  Sign up!",
+                        style: customBodyMediumStyle))
+              ],
+            ),
           ),
         ),
       ),

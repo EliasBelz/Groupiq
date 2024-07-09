@@ -21,6 +21,10 @@ class ProfileSelfViewController {
     return currentUserNotifier.currentUser!.name;
   }
 
+  String email() {
+    return currentUserNotifier.currentUser?.email ?? "your email";
+  }
+
   String avatarLink() {
     return currentUserNotifier.currentUser!.avatarFile.toString();
   }

@@ -12,7 +12,7 @@ class Registry {
     getIt.registerSingleton<CurrentUserProvider>(CurrentUserProvider());
     getIt.registerLazySingleton<LocalStorage>(() => LocalStorage());
     final localStorage = getIt<LocalStorage>();
-    final pocketBase = await PBConnect(storage: localStorage, local: false);
+    final pocketBase = await PBConnect(storage: localStorage, local: true);
     getIt.registerSingleton<PocketBase>(pocketBase);
     final PocketBaseService pocketBaseService =
         PocketBaseService(pb: pocketBase);
