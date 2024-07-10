@@ -16,17 +16,17 @@ class VerificationView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(0, 115, 248, 1),
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
         elevation: 0,
-        backgroundColor: Color.fromARGB(0, 0, 0, 0),
+        backgroundColor: const Color.fromARGB(0, 0, 0, 0),
       ),
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: const BoxDecoration(
             image: DecorationImage(
-          image: const AssetImage("assets/images/confirm-bg.png"),
+          image: AssetImage("assets/images/confirm-bg.png"),
           fit: BoxFit.cover,
         )),
         child: Padding(

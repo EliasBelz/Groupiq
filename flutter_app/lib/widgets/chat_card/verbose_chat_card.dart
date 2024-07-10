@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:groupiq_flutter/models/chat_detail_model.dart';
 import 'package:groupiq_flutter/widgets/chat_card/empty_chat_card.dart';
-import 'package:pocketbase/pocketbase.dart';
 
 class VerboseChatCard extends StatefulWidget {
   final ChatDetailModel model;
@@ -59,7 +58,7 @@ class _VerboseChatCardState extends State<VerboseChatCard> {
             ),
             Text(
               title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const Text('Most recent message blah blah blah blah blah blah'),
             // Expiry date

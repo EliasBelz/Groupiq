@@ -55,7 +55,7 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: '/',
               pageBuilder: (context, state) {
-                return CustomTransitionPage<void>(
+                return const CustomTransitionPage<void>(
                   child: LoginView(),
                   transitionsBuilder: _slideTransitionBuilder,
                   transitionDuration: Duration(milliseconds: 300),
@@ -65,7 +65,7 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: '/home',
               pageBuilder: (context, state) {
-                return CustomTransitionPage<void>(
+                return const CustomTransitionPage<void>(
                   child: HomeView(),
                   transitionsBuilder: _slideTransitionBuilder,
                   transitionDuration: Duration(milliseconds: 300),
@@ -75,7 +75,7 @@ class _MainViewState extends State<MainView> {
             GoRoute(
               path: '/explore',
               pageBuilder: (context, state) {
-                return CustomTransitionPage<void>(
+                return const CustomTransitionPage<void>(
                   child: ExploreView(),
                   transitionsBuilder: _slideTransitionBuilder,
                   transitionDuration: Duration(milliseconds: 300),
@@ -100,7 +100,7 @@ class _MainViewState extends State<MainView> {
                       id: state.pathParameters['id']!,
                     ),
                     transitionsBuilder: _slideTransitionBuilder,
-                    transitionDuration: Duration(milliseconds: 300));
+                    transitionDuration: const Duration(milliseconds: 300));
               },
             ),
             GoRoute(
@@ -175,11 +175,11 @@ class _MainViewState extends State<MainView> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
                 errorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide:
                         BorderSide(color: Color.fromARGB(255, 255, 185, 185))),
                 focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
                         color: Color.fromRGBO(255, 185, 185, 1), width: 3.0)),
                 errorStyle:
